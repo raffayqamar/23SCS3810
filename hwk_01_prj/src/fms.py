@@ -1,7 +1,7 @@
 """
 CS3810: Principles of Database Systems
 Instructor: Thyago Mota
-Student: 
+Student: Muhammad Qamar
 Description: A simple FMS for projects
 """
 
@@ -132,7 +132,20 @@ class ProjectCRUD(CRUD):
         * else, return None
     """
     def read(self, key) -> Project: 
-        return None
+        with open(os.path.join('db', PRJ_FILE_NAME), "r") as file:
+            for line in file.readlines():
+                line = line.strip()
+                projects_2 = line.split(",")
+                if projects_2[0] == key:
+                    with open(os.path.join('db',key, EMP_FILE_NAME),"r") as emp : 
+                        employees = emp.readlines()
+                        print(emp)
+                        return Project(projects_2[0], projects_2[1], projects_2[2], int(projects_2[3]), employees)  
+            return None 
+
+
+
+
 
     def delete(self, key) -> bool: 
         result = False
@@ -165,7 +178,18 @@ class DB:
         * if the employee is not found, return None
     """
     def find_employee(id):
-        return None
+        with open(os.path.join('db', PRJ_FILE_NAME)) as file:
+            for line in file.readlines():
+                projects_2 = line.split(",")
+                with open(os.path.join('db', projects_2[0], EMP_FILE_NAME )) as file_:
+                    for employee in file_.readlines():
+                        employees = employee.split(",")
+                        if int(employees[0]) == id:
+                            return Employee(int(employees[0]), employees[1], employees[2])
+                    else:
+                        return None
+
+            
        
 def menu(): 
     print("1. Create")
